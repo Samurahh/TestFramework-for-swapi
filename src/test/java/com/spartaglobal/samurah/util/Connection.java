@@ -1,4 +1,4 @@
-package com.spartaglobal.framework;
+package com.spartaglobal.samurah.util;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,7 +12,6 @@ public class Connection {
     private HttpRequest httpRequest;
     private HttpResponse<String> httpResponse;
 
-
     private Connection(String url) throws IOException, InterruptedException {
         this.url = url;
         this.httpClient = HttpClient.newHttpClient();
@@ -21,6 +20,10 @@ public class Connection {
 
     public static Connection connect(String url) throws IOException, InterruptedException {
         return new Connection(url);
+    }
+
+    public static Connection connect(URL url) throws IOException, InterruptedException {
+        return new Connection(url.toString());
     }
 
     private void connectToAPI(String url) throws IOException, InterruptedException {

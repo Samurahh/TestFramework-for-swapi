@@ -1,18 +1,26 @@
-package com.spartaglobal.framework.dtos;
+package com.spartaglobal.samurah.dtos;
 
-public class VehicleDTO extends SwapiObject{
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.spartaglobal.samurah.util.API;
+import com.spartaglobal.samurah.util.URL;
 
-    public VehicleDTO(){}
+public class StarshipDTO extends SwapiObject {
+
+    @JsonIgnore
+    public static String referenceName = "starships";
 
     private String name;
     private String model;
-    private String vehicle_class;
+    private String starship_class;
     private String manufacturer;
-    private String length;
     private String cost_in_credits;
+    private String length;
     private String crew;
     private String passengers;
     private String max_atmosphering_speed;
+    private String MGLT;
     private String cargo_capacity;
     private String consumables;
     private String[] films;
@@ -20,6 +28,31 @@ public class VehicleDTO extends SwapiObject{
     private String url;
     private String created;
     private String edited;
+    private API api = null;
+
+    public StarshipDTO() {
+    }
+
+    public static StarshipDTO createFrom(JsonObject value, API api) {
+        StarshipDTO starshipDTO = new Gson().fromJson(value.toString(), StarshipDTO.class);
+        starshipDTO.setAPI(api);
+        return starshipDTO;
+    }
+
+    @Override
+    protected void setAPI(API api) {
+        this.api = api;
+    }
+
+    @Override
+    protected void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Override
+    protected URL getUrl() {
+        return URL.decode(url);
+    }
 
     public String getName() {
         return name;
@@ -37,12 +70,12 @@ public class VehicleDTO extends SwapiObject{
         this.model = model;
     }
 
-    public String getVehicle_class() {
-        return vehicle_class;
+    public String getStarship_class() {
+        return starship_class;
     }
 
-    public void setVehicle_class(String vehicle_class) {
-        this.vehicle_class = vehicle_class;
+    public void setStarship_class(String starship_class) {
+        this.starship_class = starship_class;
     }
 
     public String getManufacturer() {
@@ -53,20 +86,20 @@ public class VehicleDTO extends SwapiObject{
         this.manufacturer = manufacturer;
     }
 
-    public String getLength() {
-        return length;
-    }
-
-    public void setLength(String length) {
-        this.length = length;
-    }
-
     public String getCost_in_credits() {
         return cost_in_credits;
     }
 
     public void setCost_in_credits(String cost_in_credits) {
         this.cost_in_credits = cost_in_credits;
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public void setLength(String length) {
+        this.length = length;
     }
 
     public String getCrew() {
@@ -91,6 +124,14 @@ public class VehicleDTO extends SwapiObject{
 
     public void setMax_atmosphering_speed(String max_atmosphering_speed) {
         this.max_atmosphering_speed = max_atmosphering_speed;
+    }
+
+    public String getMGLT() {
+        return MGLT;
+    }
+
+    public void setMGLT(String MGLT) {
+        this.MGLT = MGLT;
     }
 
     public String getCargo_capacity() {
@@ -123,14 +164,6 @@ public class VehicleDTO extends SwapiObject{
 
     public void setPilots(String[] pilots) {
         this.pilots = pilots;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getCreated() {

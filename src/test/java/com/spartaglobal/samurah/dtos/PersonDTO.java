@@ -1,8 +1,13 @@
-package com.spartaglobal.framework.dtos;
+package com.spartaglobal.samurah.dtos;
 
-public class PersonDTO extends SwapiObject{
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.spartaglobal.samurah.util.API;
+import com.spartaglobal.samurah.util.URL;
 
-    public PersonDTO(){}
+public class PersonDTO extends SwapiObject {
+
+    public static String referenceName = "people";
 
     private String name;
     private String birth_year;
@@ -20,6 +25,30 @@ public class PersonDTO extends SwapiObject{
     private String url;
     private String created;
     private String edited;
+    private API api;
+
+    public PersonDTO(){}
+
+    public static PersonDTO createFrom(JsonObject value, API api) {
+        PersonDTO personDTO = new Gson().fromJson(value.toString(), PersonDTO.class);
+        personDTO.setAPI(api);
+        return personDTO;
+    }
+
+    @Override
+    protected void setAPI(API api) {
+        this.api = api;
+    }
+
+    @Override
+    protected void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Override
+    protected URL getUrl() {
+        return URL.decode(url);
+    }
 
     public String getName() {
         return name;
@@ -123,14 +152,6 @@ public class PersonDTO extends SwapiObject{
 
     public void setVehicles(String[] vehicles) {
         this.vehicles = vehicles;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getCreated() {

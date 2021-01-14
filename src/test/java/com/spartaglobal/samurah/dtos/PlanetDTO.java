@@ -1,8 +1,15 @@
-package com.spartaglobal.framework.dtos;
+package com.spartaglobal.samurah.dtos;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.spartaglobal.samurah.util.API;
+import com.spartaglobal.samurah.util.URL;
 
 public class PlanetDTO extends SwapiObject {
 
-    public PlanetDTO(){}
+    @JsonIgnore
+    public static String referenceName = "planets";
 
     private String name;
     private String diameter;
@@ -18,6 +25,31 @@ public class PlanetDTO extends SwapiObject {
     private String url;
     private String created;
     private String edited;
+    private API api = null;
+
+    public PlanetDTO() {
+    }
+
+    public static PlanetDTO createFrom(JsonObject value, API api) {
+        PlanetDTO planetDTO = new Gson().fromJson(value.toString(), PlanetDTO.class);
+        planetDTO.setAPI(api);
+        return planetDTO;
+    }
+
+    @Override
+    protected void setAPI(API api) {
+        this.api = api;
+    }
+
+    @Override
+    protected void setUrl(String url) {
+        this.url = url;
+    }
+
+    @Override
+    protected URL getUrl() {
+        return URL.decode(url);
+    }
 
     public String getName() {
         return name;
@@ -105,14 +137,6 @@ public class PlanetDTO extends SwapiObject {
 
     public void setFilms(String[] films) {
         this.films = films;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
     }
 
     public String getCreated() {
