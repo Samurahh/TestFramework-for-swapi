@@ -2,8 +2,11 @@ package com.spartaglobal.samurah.dtos;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.spartaglobal.samurah.exceptions.RequestFailedException;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
+
+import java.io.IOException;
 
 public class PersonDTO extends SwapiObject {
 
@@ -86,12 +89,24 @@ public class PersonDTO extends SwapiObject {
         return homeworld;
     }
 
+    public PlanetDTO homeworld() throws InterruptedException, RequestFailedException, IOException {
+        return PlanetDTO.createFrom(api.request(homeworld), api);
+    }
+
     public boolean hasFilms(){
         return films.length > 0;
     }
 
-    public String[] films() {
+    public String[] filmsReferences() {
         return films;
+    }
+
+    public FilmDTO[] films() throws InterruptedException, RequestFailedException, IOException {
+        FilmDTO[] objects = new FilmDTO[films.length];
+        for (int i = 0; i < films.length; i++) {
+            objects[i] = FilmDTO.createFrom(api.request(films[i]), api);
+        }
+        return objects;
     }
 
     public FilmDTO film(int id) throws Exception {
@@ -105,8 +120,16 @@ public class PersonDTO extends SwapiObject {
         return species.length > 0;
     }
 
-    public String[] species() {
+    public String[] speciesReferences() {
         return species;
+    }
+
+    public SpeciesDTO[] species() throws InterruptedException, RequestFailedException, IOException {
+        SpeciesDTO[] objects = new SpeciesDTO[species.length];
+        for (int i = 0; i < species.length; i++) {
+            objects[i] = SpeciesDTO.createFrom(api.request(species[i]), api);
+        }
+        return objects;
     }
 
     public SpeciesDTO species(int id) throws Exception {
@@ -120,8 +143,16 @@ public class PersonDTO extends SwapiObject {
         return starships.length > 0;
     }
 
-    public String[] starships() {
+    public String[] starshipsReferences() {
         return starships;
+    }
+
+    public StarshipDTO[] starships() throws InterruptedException, RequestFailedException, IOException {
+        StarshipDTO[] objects = new StarshipDTO[starships.length];
+        for (int i = 0; i < starships.length; i++) {
+            objects[i] = StarshipDTO.createFrom(api.request(starships[i]), api);
+        }
+        return objects;
     }
 
     public StarshipDTO starship(int id) throws Exception {
@@ -135,12 +166,20 @@ public class PersonDTO extends SwapiObject {
         return vehicles.length > 0;
     }
 
-    public String[] vehicles() {
+    public String[] vehiclesReferences() {
         return vehicles;
     }
 
+    public VehicleDTO[] vehicles() throws InterruptedException, RequestFailedException, IOException {
+        VehicleDTO[] objects = new VehicleDTO[vehicles.length];
+        for (int i = 0; i < vehicles.length; i++) {
+            objects[i] = VehicleDTO.createFrom(api.request(vehicles[i]), api);
+        }
+        return objects;
+    }
+
     public VehicleDTO vehicle(int id) throws Exception {
-        if (id < starships.length) {
+        if (id < vehicles.length) {
             return VehicleDTO.createFrom(api.request(vehicles[id]), api);
         }
         return null;

@@ -148,11 +148,4 @@ public class FrameworkTest {
             Assertions.fail();
         }
     }
-
-    @Test
-    @DisplayName("WITH: Can pick up from anywhere in the FileTree")
-    void withCanPickUpFromAnywhereInTheFileTree(){
-
-    }
-
 }

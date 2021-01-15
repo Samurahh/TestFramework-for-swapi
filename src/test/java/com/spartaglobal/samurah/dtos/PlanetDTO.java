@@ -3,8 +3,11 @@ package com.spartaglobal.samurah.dtos;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.spartaglobal.samurah.exceptions.RequestFailedException;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
+
+import java.io.IOException;
 
 public class PlanetDTO extends SwapiObject {
 
@@ -91,8 +94,16 @@ public class PlanetDTO extends SwapiObject {
         return residents.length > 0;
     }
 
-    public String[] residents() {
+    public String[] residentsReferences() {
         return residents;
+    }
+
+    public PersonDTO[] residents() throws InterruptedException, RequestFailedException, IOException {
+        PersonDTO[] objects = new PersonDTO[residents.length];
+        for (int i = 0; i < residents.length; i++) {
+            objects[i] = PersonDTO.createFrom(api.request(residents[i]), api);
+        }
+        return objects;
     }
 
     public PersonDTO resident(int id) throws Exception {
@@ -106,8 +117,16 @@ public class PlanetDTO extends SwapiObject {
         return films.length > 0;
     }
 
-    public String[] films() {
+    public String[] filmsReferences() {
         return films;
+    }
+
+    public FilmDTO[] films() throws InterruptedException, RequestFailedException, IOException {
+        FilmDTO[] objects = new FilmDTO[films.length];
+        for (int i = 0; i < films.length; i++) {
+            objects[i] = FilmDTO.createFrom(api.request(films[i]), api);
+        }
+        return objects;
     }
 
     public FilmDTO film(int id) throws Exception {

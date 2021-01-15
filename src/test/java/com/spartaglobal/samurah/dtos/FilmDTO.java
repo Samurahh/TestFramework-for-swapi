@@ -55,8 +55,16 @@ public class FilmDTO extends SwapiObject {
         return species.length > 0;
     }
 
-    public String[] species() {
+    public String[] speciesReferences() {
         return species;
+    }
+
+    public SpeciesDTO[] species() throws InterruptedException, RequestFailedException, IOException {
+        SpeciesDTO[] objects = new SpeciesDTO[species.length];
+        for (int i = 0; i < species.length; i++) {
+            objects[i] = SpeciesDTO.createFrom(api.request(species[i]), api);
+        }
+        return objects;
     }
 
     public SpeciesDTO species(int id) throws IOException, InterruptedException, RequestFailedException {
@@ -70,8 +78,16 @@ public class FilmDTO extends SwapiObject {
         return planets.length > 0;
     }
 
-    public String[] planets() {
+    public String[] planetsReferences() {
         return planets;
+    }
+
+    public PlanetDTO[] planets() throws InterruptedException, RequestFailedException, IOException {
+        PlanetDTO[] objects = new PlanetDTO[planets.length];
+        for (int i = 0; i < planets.length; i++) {
+            objects[i] = PlanetDTO.createFrom(api.request(planets[i]), api);
+        }
+        return objects;
     }
 
     public PlanetDTO planet(int id) throws Exception {
@@ -85,8 +101,16 @@ public class FilmDTO extends SwapiObject {
         return planets.length > 0;
     }
 
-    public String[] starships() {
+    public String[] starshipsReferences() {
         return starships;
+    }
+
+    public StarshipDTO[] starships() throws InterruptedException, RequestFailedException, IOException {
+        StarshipDTO[] objects = new StarshipDTO[starships.length];
+        for (int i = 0; i < starships.length; i++) {
+            objects[i] = StarshipDTO.createFrom(api.request(starships[i]), api);
+        }
+        return objects;
     }
 
     public StarshipDTO starship(int id) throws Exception {
@@ -100,8 +124,16 @@ public class FilmDTO extends SwapiObject {
         return vehicles.length > 0;
     }
 
-    public String[] vehicles() {
+    public String[] vehiclesReferences() {
         return vehicles;
+    }
+
+    public VehicleDTO[] vehicles() throws InterruptedException, RequestFailedException, IOException {
+        VehicleDTO[] objects = new VehicleDTO[vehicles.length];
+        for (int i = 0; i < vehicles.length; i++) {
+            objects[i] = VehicleDTO.createFrom(api.request(vehicles[i]), api);
+        }
+        return objects;
     }
 
     public VehicleDTO vehicle(int id) throws Exception {
@@ -115,8 +147,16 @@ public class FilmDTO extends SwapiObject {
         return characters.length > 0;
     }
 
-    public String[] characters() {
+    public String[] charactersReferences() {
         return characters;
+    }
+
+    public PersonDTO[] characters() throws InterruptedException, RequestFailedException, IOException {
+        PersonDTO[] objects = new PersonDTO[characters.length];
+        for (int i = 0; i < characters.length; i++) {
+            objects[i] = PersonDTO.createFrom(api.request(characters[i]), api);
+        }
+        return objects;
     }
 
     public PersonDTO character(int id) throws Exception {

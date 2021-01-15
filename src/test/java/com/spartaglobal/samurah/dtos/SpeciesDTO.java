@@ -2,8 +2,11 @@ package com.spartaglobal.samurah.dtos;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.spartaglobal.samurah.exceptions.RequestFailedException;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
+
+import java.io.IOException;
 
 public class SpeciesDTO extends SwapiObject {
 
@@ -83,12 +86,24 @@ public class SpeciesDTO extends SwapiObject {
         return homeworld;
     }
 
+    public PlanetDTO homeworld() throws Exception{
+        return PlanetDTO.createFrom(api.request(homeworld), api);
+    }
+
     public boolean hasPeople(){
         return people.length > 0;
     }
 
-    public String[] people() {
+    public String[] peopleReferences() {
         return people;
+    }
+
+    public PersonDTO[] people() throws InterruptedException, RequestFailedException, IOException {
+        PersonDTO[] objects = new PersonDTO[people.length];
+        for (int i = 0; i < people.length; i++) {
+            objects[i] = PersonDTO.createFrom(api.request(people[i]), api);
+        }
+        return objects;
     }
 
     public PersonDTO person(int id) throws Exception {
@@ -102,8 +117,16 @@ public class SpeciesDTO extends SwapiObject {
         return films.length > 0;
     }
 
-    public String[] films() {
+    public String[] filmsReferences() {
         return films;
+    }
+
+    public FilmDTO[] films() throws InterruptedException, RequestFailedException, IOException {
+        FilmDTO[] objects = new FilmDTO[films.length];
+        for (int i = 0; i < films.length; i++) {
+            objects[i] = FilmDTO.createFrom(api.request(films[i]), api);
+        }
+        return objects;
     }
 
     public FilmDTO film(int id) throws Exception {

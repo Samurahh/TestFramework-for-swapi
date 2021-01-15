@@ -18,23 +18,23 @@ public class APIUtility {
         String[] references;
         switch (getTarget(reference.getPath())){
             case "people":{
-                references = film.characters();
+                references = film.charactersReferences();
                 break;
             }
             case "planets":{
-                references = film.planets();
+                references = film.planetsReferences();
                 break;
             }
             case "starships":{
-                references = film.starships();
+                references = film.starshipsReferences();
                 break;
             }
             case "vehicles":{
-                references = film.species();
+                references = film.speciesReferences();
                 break;
             }
             case "species":{
-                references = film.species();
+                references = film.speciesReferences();
                 break;
             }
             default:{
@@ -59,19 +59,19 @@ public class APIUtility {
         String[] references;
         switch (getTarget(reference.getPath())){
             case "films":{
-                references = person.films();
+                references = person.filmsReferences();
                 break;
             }
             case "species":{
-                references = person.species();
+                references = person.speciesReferences();
                 break;
             }
             case "vehicles":{
-                references = person.vehicles();
+                references = person.vehiclesReferences();
                 break;
             }
             case "starships":{
-                references = person.starships();
+                references = person.starshipsReferences();
                 break;
             }
             default:{
@@ -96,11 +96,11 @@ public class APIUtility {
         String[] references;
         switch (getTarget(reference.getPath())){
             case "people":{
-                references = planet.residents();
+                references = planet.residentsReferences();
                 break;
             }
             case "films":{
-                references = planet.films();
+                references = planet.filmsReferences();
                 break;
             }
             default:{
@@ -125,11 +125,11 @@ public class APIUtility {
         String[] references;
         switch (getTarget(reference.getPath())){
             case "people":{
-                references = species.people();
+                references = species.peopleReferences();
                 break;
             }
             case "films":{
-                references = species.films();
+                references = species.filmsReferences();
                 break;
             }
             default:{
@@ -154,11 +154,11 @@ public class APIUtility {
         String[] references;
         switch (getTarget(reference.getPath())){
             case "people":{
-                references = starship.pilots();
+                references = starship.pilotsReferences();
                 break;
             }
             case "films":{
-                references = starship.films();
+                references = starship.filmsReferences();
                 break;
             }
             default:{
@@ -183,11 +183,11 @@ public class APIUtility {
         String[] references;
         switch (getTarget(reference.getPath())){
             case "people":{
-                references = vehicle.pilots();
+                references = vehicle.pilotsReferences();
                 break;
             }
             case "films":{
-                references = vehicle.films();
+                references = vehicle.filmsReferences();
                 break;
             }
             default:{
