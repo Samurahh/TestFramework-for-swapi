@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class URL {
 
     private final String baseUrl;
-    private final String path;
+    private String path;
     private String query;
 
     private URL(String baseUrl, String path, String query){
@@ -24,6 +24,11 @@ public class URL {
         }else {
             this.query = query.trim();
         }
+    }
+
+    public URL appendToPath(String extension){
+        path = path + extension;
+        return this;
     }
 
     public String getBaseUrl() {
@@ -93,6 +98,9 @@ public class URL {
         }
         if (path != null) {
             urlBuild.append(path);
+            if(path.charAt(path.length()-1) != '/'){
+                urlBuild.append("/");
+            }
             if (query != null) {
                 urlBuild.append(query);
             }

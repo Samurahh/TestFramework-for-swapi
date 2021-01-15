@@ -1,15 +1,11 @@
 package com.spartaglobal.samurah.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
 
 public class StarshipDTO extends SwapiObject {
-
-    @JsonIgnore
-    public static String referenceName = "starships";
 
     private String name;
     private String model;
@@ -28,9 +24,9 @@ public class StarshipDTO extends SwapiObject {
     private String url;
     private String created;
     private String edited;
-    private API api = null;
+    private API api = API.client;
 
-    public StarshipDTO() {
+    private StarshipDTO() {
     }
 
     public static StarshipDTO createFrom(JsonObject value, API api) {
@@ -50,7 +46,7 @@ public class StarshipDTO extends SwapiObject {
     }
 
     @Override
-    protected URL getUrl() {
+    public URL getUrl() {
         return URL.decode(url);
     }
 
@@ -58,127 +54,85 @@ public class StarshipDTO extends SwapiObject {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getModel() {
         return model;
     }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getStarship_class() {
+    public String getStarshipClass() {
         return starship_class;
-    }
-
-    public void setStarship_class(String starship_class) {
-        this.starship_class = starship_class;
     }
 
     public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
-    public String getCost_in_credits() {
+    public String getCostInCredits() {
         return cost_in_credits;
-    }
-
-    public void setCost_in_credits(String cost_in_credits) {
-        this.cost_in_credits = cost_in_credits;
     }
 
     public String getLength() {
         return length;
     }
 
-    public void setLength(String length) {
-        this.length = length;
-    }
-
     public String getCrew() {
         return crew;
-    }
-
-    public void setCrew(String crew) {
-        this.crew = crew;
     }
 
     public String getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(String passengers) {
-        this.passengers = passengers;
-    }
-
-    public String getMax_atmosphering_speed() {
+    public String getMaxAatmospheringSpeed() {
         return max_atmosphering_speed;
-    }
-
-    public void setMax_atmosphering_speed(String max_atmosphering_speed) {
-        this.max_atmosphering_speed = max_atmosphering_speed;
     }
 
     public String getMGLT() {
         return MGLT;
     }
 
-    public void setMGLT(String MGLT) {
-        this.MGLT = MGLT;
-    }
-
     public String getCargo_capacity() {
         return cargo_capacity;
-    }
-
-    public void setCargo_capacity(String cargo_capacity) {
-        this.cargo_capacity = cargo_capacity;
     }
 
     public String getConsumables() {
         return consumables;
     }
 
-    public void setConsumables(String consumables) {
-        this.consumables = consumables;
+    public boolean hasFilms(){
+        return films.length > 0;
     }
 
-    public String[] getFilms() {
+    public String[] films() {
         return films;
     }
 
-    public void setFilms(String[] films) {
-        this.films = films;
+    public FilmDTO film(int id) throws Exception {
+        if(id<films.length){
+            return FilmDTO.createFrom(api.request(films[id]), api);
+        }
+        return null;
     }
 
-    public String[] getPilots() {
+    public boolean hasPilots(){
+        return pilots.length > 0;
+    }
+
+    public String[] pilots() {
         return pilots;
     }
 
-    public void setPilots(String[] pilots) {
-        this.pilots = pilots;
+    public PersonDTO pilot(int id) throws Exception {
+        if(id<pilots.length){
+            return PersonDTO.createFrom(api.request(pilots[id]), api);
+        }
+        return null;
     }
 
     public String getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
     public String getEdited() {
         return edited;
-    }
-
-    public void setEdited(String edited) {
-        this.edited = edited;
     }
 }

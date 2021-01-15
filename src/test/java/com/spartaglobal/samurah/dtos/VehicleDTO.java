@@ -26,7 +26,7 @@ public class VehicleDTO extends SwapiObject {
     private String url;
     private String created;
     private String edited;
-    private API api = null;
+    private API api = API.client;
 
     public VehicleDTO() {
     }
@@ -48,7 +48,7 @@ public class VehicleDTO extends SwapiObject {
     }
 
     @Override
-    protected URL getUrl() {
+    public URL getUrl() {
         return URL.decode(url);
     }
 
@@ -56,119 +56,81 @@ public class VehicleDTO extends SwapiObject {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getModel() {
         return model;
     }
 
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getVehicle_class() {
+    public String getVehicleClass() {
         return vehicle_class;
-    }
-
-    public void setVehicle_class(String vehicle_class) {
-        this.vehicle_class = vehicle_class;
     }
 
     public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
-    }
-
     public String getLength() {
         return length;
     }
 
-    public void setLength(String length) {
-        this.length = length;
-    }
-
-    public String getCost_in_credits() {
+    public String getCostInCredits() {
         return cost_in_credits;
-    }
-
-    public void setCost_in_credits(String cost_in_credits) {
-        this.cost_in_credits = cost_in_credits;
     }
 
     public String getCrew() {
         return crew;
     }
 
-    public void setCrew(String crew) {
-        this.crew = crew;
-    }
-
     public String getPassengers() {
         return passengers;
     }
 
-    public void setPassengers(String passengers) {
-        this.passengers = passengers;
-    }
-
-    public String getMax_atmosphering_speed() {
+    public String getMaxAtmospheringSpeed() {
         return max_atmosphering_speed;
-    }
-
-    public void setMax_atmosphering_speed(String max_atmosphering_speed) {
-        this.max_atmosphering_speed = max_atmosphering_speed;
     }
 
     public String getCargo_capacity() {
         return cargo_capacity;
     }
 
-    public void setCargo_capacity(String cargo_capacity) {
-        this.cargo_capacity = cargo_capacity;
-    }
-
     public String getConsumables() {
         return consumables;
     }
 
-    public void setConsumables(String consumables) {
-        this.consumables = consumables;
+    public boolean hasFilms(){
+        return films.length > 0;
     }
 
-    public String[] getFilms() {
+    public String[] films() {
         return films;
     }
 
-    public void setFilms(String[] films) {
-        this.films = films;
+    public FilmDTO film(int id) throws Exception {
+        if(id<films.length){
+            return FilmDTO.createFrom(api.request(films[id]), api);
+        }
+        return null;
     }
 
-    public String[] getPilots() {
+    public boolean hasPilots(){
+        return pilots.length > 0;
+    }
+
+    public String[] pilots() {
         return pilots;
     }
 
-    public void setPilots(String[] pilots) {
-        this.pilots = pilots;
+    public PersonDTO pilot(int id) throws Exception {
+        if(id<pilots.length){
+            return PersonDTO.createFrom(api.request(pilots[id]), api);
+        }
+        return null;
     }
 
     public String getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
     public String getEdited() {
         return edited;
-    }
-
-    public void setEdited(String edited) {
-        this.edited = edited;
     }
 }

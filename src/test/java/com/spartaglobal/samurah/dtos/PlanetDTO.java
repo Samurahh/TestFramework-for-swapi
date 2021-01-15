@@ -25,7 +25,7 @@ public class PlanetDTO extends SwapiObject {
     private String url;
     private String created;
     private String edited;
-    private API api = null;
+    private API api = API.client;
 
     public PlanetDTO() {
     }
@@ -47,7 +47,7 @@ public class PlanetDTO extends SwapiObject {
     }
 
     @Override
-    protected URL getUrl() {
+    public URL getUrl() {
         return URL.decode(url);
     }
 
@@ -55,103 +55,74 @@ public class PlanetDTO extends SwapiObject {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDiameter() {
         return diameter;
     }
 
-    public void setDiameter(String diameter) {
-        this.diameter = diameter;
-    }
-
-    public String getRotation_period() {
+    public String getRotationPeriod() {
         return rotation_period;
     }
 
-    public void setRotation_period(String rotation_period) {
-        this.rotation_period = rotation_period;
-    }
-
-    public String getOrbital_period() {
+    public String getOrbitalPeriod() {
         return orbital_period;
-    }
-
-    public void setOrbital_period(String orbital_period) {
-        this.orbital_period = orbital_period;
     }
 
     public String getGravity() {
         return gravity;
     }
 
-    public void setGravity(String gravity) {
-        this.gravity = gravity;
-    }
-
     public String getPopulation() {
         return population;
-    }
-
-    public void setPopulation(String population) {
-        this.population = population;
     }
 
     public String getClimate() {
         return climate;
     }
 
-    public void setClimate(String climate) {
-        this.climate = climate;
-    }
-
     public String getTerrain() {
         return terrain;
     }
 
-    public void setTerrain(String terrain) {
-        this.terrain = terrain;
-    }
-
-    public String getSurface_water() {
+    public String getSurfaceWater() {
         return surface_water;
     }
 
-    public void setSurface_water(String surface_water) {
-        this.surface_water = surface_water;
+    public boolean hasResidents(){
+        return residents.length > 0;
     }
 
-    public String[] getResidents() {
+    public String[] residents() {
         return residents;
     }
 
-    public void setResidents(String[] residents) {
-        this.residents = residents;
+    public PersonDTO resident(int id) throws Exception {
+        if (id < residents.length) {
+            return PersonDTO.createFrom(api.request(residents[id]), api);
+        }
+        return null;
     }
 
-    public String[] getFilms() {
+    public boolean hasFilms(){
+        return films.length > 0;
+    }
+
+    public String[] films() {
         return films;
     }
 
-    public void setFilms(String[] films) {
-        this.films = films;
+    public FilmDTO film(int id) throws Exception {
+        if(id<films.length){
+            return FilmDTO.createFrom(api.request(films[id]), api);
+        }
+        return null;
     }
 
     public String getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
     public String getEdited() {
         return edited;
     }
 
-    public void setEdited(String edited) {
-        this.edited = edited;
-    }
 }

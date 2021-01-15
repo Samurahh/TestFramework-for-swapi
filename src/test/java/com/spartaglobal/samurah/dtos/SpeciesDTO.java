@@ -1,15 +1,11 @@
 package com.spartaglobal.samurah.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
 
 public class SpeciesDTO extends SwapiObject {
-
-    @JsonIgnore
-    public static String referenceName = "species";
 
     private String name;
     private String classification;
@@ -25,9 +21,9 @@ public class SpeciesDTO extends SwapiObject {
     private String url;
     private String created;
     private String edited;
-    private API api = null;
+    private API api = API.client;
 
-    public SpeciesDTO() {
+    private SpeciesDTO() {
     }
 
     public static SpeciesDTO createFrom(JsonObject value, API api) {
@@ -47,7 +43,7 @@ public class SpeciesDTO extends SwapiObject {
     }
 
     @Override
-    protected URL getUrl() {
+    public URL getUrl() {
         return URL.decode(url);
     }
 
@@ -55,103 +51,74 @@ public class SpeciesDTO extends SwapiObject {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getClassification() {
         return classification;
     }
 
-    public void setClassification(String classification) {
-        this.classification = classification;
-    }
-
-    public String getAverage_height() {
+    public String getAverageHeight() {
         return average_height;
     }
 
-    public void setAverage_height(String average_height) {
-        this.average_height = average_height;
-    }
-
-    public String getAverage_lifespan() {
+    public String getAverageLifespan() {
         return average_lifespan;
     }
 
-    public void setAverage_lifespan(String average_lifespan) {
-        this.average_lifespan = average_lifespan;
-    }
-
-    public String getEye_colors() {
+    public String getEyeColors() {
         return eye_colors;
     }
 
-    public void setEye_colors(String eye_colors) {
-        this.eye_colors = eye_colors;
-    }
-
-    public String getHair_colors() {
+    public String getHairColors() {
         return hair_colors;
     }
 
-    public void setHair_colors(String hair_colors) {
-        this.hair_colors = hair_colors;
-    }
-
-    public String getSkin_colors() {
+    public String getSkinColors() {
         return skin_colors;
-    }
-
-    public void setSkin_colors(String skin_colors) {
-        this.skin_colors = skin_colors;
     }
 
     public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
     public String getHomeworld() {
         return homeworld;
     }
 
-    public void setHomeworld(String homeworld) {
-        this.homeworld = homeworld;
+    public boolean hasPeople(){
+        return people.length > 0;
     }
 
-    public String[] getPeople() {
+    public String[] people() {
         return people;
     }
 
-    public void setPeople(String[] people) {
-        this.people = people;
+    public PersonDTO person(int id) throws Exception {
+        if(id<people.length){
+            return PersonDTO.createFrom(api.request(people[id]), api);
+        }
+        return null;
     }
 
-    public String[] getFilms() {
+    public boolean hasFilms(){
+        return films.length > 0;
+    }
+
+    public String[] films() {
         return films;
     }
 
-    public void setFilms(String[] films) {
-        this.films = films;
+    public FilmDTO film(int id) throws Exception {
+        if(id<films.length){
+            return FilmDTO.createFrom(api.request(films[id]), api);
+        }
+        return null;
     }
 
     public String getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
     public String getEdited() {
         return edited;
     }
 
-    public void setEdited(String edited) {
-        this.edited = edited;
-    }
 }

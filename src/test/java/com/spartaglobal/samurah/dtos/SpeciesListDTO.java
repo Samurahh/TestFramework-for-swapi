@@ -14,7 +14,7 @@ public class SpeciesListDTO extends SwapiObject implements ListInterface {
     private String next;
     private String previous;
     private SpeciesDTO[] results;
-    private API api = null;
+    private API api = API.client;
     private String url;
 
     public static SpeciesListDTO createFrom(JsonObject value) {
@@ -64,7 +64,7 @@ public class SpeciesListDTO extends SwapiObject implements ListInterface {
     }
 
     @Override
-    protected URL getUrl() {
+    public URL getUrl() {
         return URL.decode(url);
     }
 
@@ -95,6 +95,10 @@ public class SpeciesListDTO extends SwapiObject implements ListInterface {
 
     public void setPrevious(String previous) {
         this.previous = previous;
+    }
+
+    public boolean hasResults(){
+        return results.length > 0;
     }
 
     public SpeciesDTO[] getResults() {

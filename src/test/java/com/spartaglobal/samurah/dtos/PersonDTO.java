@@ -25,7 +25,7 @@ public class PersonDTO extends SwapiObject {
     private String url;
     private String created;
     private String edited;
-    private API api;
+    private API api = API.client;
 
     public PersonDTO(){}
 
@@ -46,7 +46,7 @@ public class PersonDTO extends SwapiObject {
     }
 
     @Override
-    protected URL getUrl() {
+    public URL getUrl() {
         return URL.decode(url);
     }
 
@@ -54,119 +54,103 @@ public class PersonDTO extends SwapiObject {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getBirth_year() {
         return birth_year;
-    }
-
-    public void setBirth_year(String birth_year) {
-        this.birth_year = birth_year;
     }
 
     public String getEye_color() {
         return eye_color;
     }
 
-    public void setEye_color(String eye_color) {
-        this.eye_color = eye_color;
-    }
-
     public String getGender() {
         return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getHair_color() {
         return hair_color;
     }
 
-    public void setHair_color(String hair_color) {
-        this.hair_color = hair_color;
-    }
-
     public String getHeight() {
         return height;
-    }
-
-    public void setHeight(String height) {
-        this.height = height;
     }
 
     public String getMass() {
         return mass;
     }
 
-    public void setMass(String mass) {
-        this.mass = mass;
-    }
-
     public String getSkin_color() {
         return skin_color;
-    }
-
-    public void setSkin_color(String skin_color) {
-        this.skin_color = skin_color;
     }
 
     public String getHomeworld() {
         return homeworld;
     }
 
-    public void setHomeworld(String homeworld) {
-        this.homeworld = homeworld;
+    public boolean hasFilms(){
+        return films.length > 0;
     }
 
-    public String[] getFilms() {
+    public String[] films() {
         return films;
     }
 
-    public void setFilms(String[] films) {
-        this.films = films;
+    public FilmDTO film(int id) throws Exception {
+        if(id<films.length){
+            return FilmDTO.createFrom(api.request(films[id]), api);
+        }
+        return null;
     }
 
-    public String[] getSpecies() {
+    public boolean hasSpecies(){
+        return species.length > 0;
+    }
+
+    public String[] species() {
         return species;
     }
 
-    public void setSpecies(String[] species) {
-        this.species = species;
+    public SpeciesDTO species(int id) throws Exception {
+        if (id < species.length) {
+            return SpeciesDTO.createFrom(api.request(species[id]), api);
+        }
+        return null;
     }
 
-    public String[] getStarships() {
+    public boolean hasStarships(){
+        return starships.length > 0;
+    }
+
+    public String[] starships() {
         return starships;
     }
 
-    public void setStarships(String[] starships) {
-        this.starships = starships;
+    public StarshipDTO starship(int id) throws Exception {
+        if (id < starships.length) {
+            return StarshipDTO.createFrom(api.request(starships[id]), api);
+        }
+        return null;
     }
 
-    public String[] getVehicles() {
+    public boolean hasVehicles(){
+        return vehicles.length > 0;
+    }
+
+    public String[] vehicles() {
         return vehicles;
     }
 
-    public void setVehicles(String[] vehicles) {
-        this.vehicles = vehicles;
+    public VehicleDTO vehicle(int id) throws Exception {
+        if (id < starships.length) {
+            return VehicleDTO.createFrom(api.request(vehicles[id]), api);
+        }
+        return null;
     }
 
     public String getCreated() {
         return created;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
-    }
-
     public String getEdited() {
         return edited;
-    }
-
-    public void setEdited(String edited) {
-        this.edited = edited;
     }
 }

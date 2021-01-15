@@ -12,7 +12,7 @@ public class VehiclesListDTO extends SwapiObject implements ListInterface {
     private String next;
     private String previous;
     private VehicleDTO[] results;
-    private API api = null;
+    private API api = API.client;
     private String url;
     public VehiclesListDTO() {
     }
@@ -64,7 +64,7 @@ public class VehiclesListDTO extends SwapiObject implements ListInterface {
     }
 
     @Override
-    protected URL getUrl() {
+    public URL getUrl() {
         return URL.decode(url);
     }
 
