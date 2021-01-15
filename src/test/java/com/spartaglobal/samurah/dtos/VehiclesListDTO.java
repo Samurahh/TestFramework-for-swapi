@@ -6,6 +6,10 @@ import com.spartaglobal.samurah.interfaces.ListInterface;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 public class VehiclesListDTO extends SwapiObject implements ListInterface {
 
     private int count;
@@ -28,8 +32,10 @@ public class VehiclesListDTO extends SwapiObject implements ListInterface {
     }
 
     public static VehiclesListDTO search(String searchName, API api) throws Exception {
-        URL queryUrl = api.root().vehicles().getUrl();
-        return VehiclesListDTO.createFrom(api.request(queryUrl.query(searchName)), api);
+        URL queryUrl = api.root().vehicles().getUrl().query(searchName);
+        VehiclesListDTO vehiclesListDTO = VehiclesListDTO.createFrom(api.request(queryUrl), api);
+        vehiclesListDTO.setUrl(queryUrl.toString());
+        return vehiclesListDTO;
     }
 
     @Override
@@ -77,31 +83,56 @@ public class VehiclesListDTO extends SwapiObject implements ListInterface {
         return count;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public String getNext() {
         return next;
-    }
-
-    public void setNext(String next) {
-        this.next = next;
     }
 
     public String getPrevious() {
         return previous;
     }
 
-    public void setPrevious(String previous) {
-        this.previous = previous;
-    }
-
     public VehicleDTO[] getResults() {
         return results;
     }
 
-    public void setResults(VehicleDTO[] results) {
-        this.results = results;
+    public Collection<VehicleDTO> getAll(){
+        ArrayList<VehicleDTO> all = new ArrayList<>(Arrays.asList(results));
+        if(this.hasPrevious()) {
+            try {
+                addToListPrevious(all, this.previous());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(this.hasNext()) {
+            try {
+                addToListNext(all, this.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return all;
+    }
+
+    private void addToListPrevious(Collection<VehicleDTO> list, VehiclesListDTO peopleListDTO){
+        list.addAll(Arrays.asList(peopleListDTO.results));
+        if(peopleListDTO.hasPrevious()) {
+            try {
+                addToListPrevious(list, peopleListDTO.previous());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addToListNext(Collection<VehicleDTO> list, VehiclesListDTO peopleListDTO){
+        list.addAll(Arrays.asList(peopleListDTO.results));
+        if(peopleListDTO.hasNext()) {
+            try {
+                addToListNext(list, peopleListDTO.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

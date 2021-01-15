@@ -6,6 +6,10 @@ import com.spartaglobal.samurah.interfaces.ListInterface;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 public class PlanetsListDTO extends SwapiObject implements ListInterface {
 
     public PlanetsListDTO(){}
@@ -69,8 +73,10 @@ public class PlanetsListDTO extends SwapiObject implements ListInterface {
     }
 
     public static PlanetsListDTO search(String searchName, API api) throws Exception {
-        URL queryUrl = api.root().planets().getUrl();
-        return PlanetsListDTO.createFrom(api.request(queryUrl.query(searchName)), api);
+        URL queryUrl = api.root().planets().getUrl().query(searchName);
+        PlanetsListDTO planetsListDTO = PlanetsListDTO.createFrom(api.request(queryUrl), api);
+        planetsListDTO.setUrl(queryUrl.toString());
+        return planetsListDTO;
     }
 
     public int getCount() {
@@ -91,5 +97,46 @@ public class PlanetsListDTO extends SwapiObject implements ListInterface {
 
     public PlanetDTO[] getResults() {
         return results;
+    }
+
+    public Collection<PlanetDTO> getAll(){
+        ArrayList<PlanetDTO> all = new ArrayList<>(Arrays.asList(results));
+        if(this.hasPrevious()) {
+            try {
+                addToListPrevious(all, this.previous());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(this.hasNext()) {
+            try {
+                addToListNext(all, this.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return all;
+    }
+
+    private void addToListPrevious(Collection<PlanetDTO> list, PlanetsListDTO peopleListDTO){
+        list.addAll(Arrays.asList(peopleListDTO.results));
+        if(peopleListDTO.hasPrevious()) {
+            try {
+                addToListPrevious(list, peopleListDTO.previous());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addToListNext(Collection<PlanetDTO> list, PlanetsListDTO peopleListDTO){
+        list.addAll(Arrays.asList(peopleListDTO.results));
+        if(peopleListDTO.hasNext()) {
+            try {
+                addToListNext(list, peopleListDTO.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

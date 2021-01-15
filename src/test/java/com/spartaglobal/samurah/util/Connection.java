@@ -31,6 +31,7 @@ public class Connection {
                 .uri(URI.create(url))
                 .build();
         this.httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        System.out.println(url);
     }
 
     public int statusCode() {

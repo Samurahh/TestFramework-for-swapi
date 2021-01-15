@@ -9,8 +9,6 @@ import java.io.IOException;
 
 public class FilmDTO extends SwapiObject {
 
-    public static String referenceName = "films";
-
     private String title;
     private int episode_id;
     private String opening_crawl;

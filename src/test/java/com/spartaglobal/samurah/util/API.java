@@ -10,12 +10,26 @@ import java.util.Map;
 
 public class API {
 
+    /**
+     * The framework will use this base_url for any call,
+     * appending the path and parameters required.
+     */
     public static final String BASE_URL = "https://swapi.dev/api/";
 
+    /**
+     * Instance of API
+     */
     public static final API client = new API();
 
+    /**
+     * The root of API found at {@value BASE_URL}
+     */
     private static RootDTO root;
 
+    /**
+     * History of requests, allowing the user to retrieve a request
+     * and avoid sending multiple requests to the server API.
+     */
     public final LinkedList<Map.Entry<Connection, JsonObject>> requests;
 
     private API(){
@@ -29,6 +43,11 @@ public class API {
         return root;
     }
 
+    /**
+     * Make a request to get the root of the API
+     * @return root of {@value BASE_URL}
+     * @throws Exception if it fails for any reason
+     */
     public JsonObject requestRoot() throws Exception {
         return request(BASE_URL);
     }
@@ -51,7 +70,7 @@ public class API {
         return jsonObject;
     }
 
-    public JsonObject deserialize(String json){
+    private JsonObject deserialize(String json){
         return new Gson().fromJson(json, JsonObject.class);
     }
 

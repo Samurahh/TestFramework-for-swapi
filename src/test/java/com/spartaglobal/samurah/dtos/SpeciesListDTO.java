@@ -6,6 +6,10 @@ import com.spartaglobal.samurah.interfaces.ListInterface;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 public class SpeciesListDTO extends SwapiObject implements ListInterface {
 
     public SpeciesListDTO(){}
@@ -69,32 +73,22 @@ public class SpeciesListDTO extends SwapiObject implements ListInterface {
     }
 
     public static SpeciesListDTO search(String searchName, API api) throws Exception {
-        URL queryUrl = api.root().species().getUrl();
-        return SpeciesListDTO.createFrom(api.request(queryUrl.query(searchName)), api);
+        URL queryUrl = api.root().species().getUrl().query(searchName);
+        SpeciesListDTO speciesListDTO = SpeciesListDTO.createFrom(api.request(queryUrl), api);
+        speciesListDTO.setUrl(queryUrl.toString());
+        return speciesListDTO;
     }
 
     public int getCount() {
         return count;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
     public String getNext() {
         return next;
     }
 
-    public void setNext(String next) {
-        this.next = next;
-    }
-
     public String getPrevious() {
         return previous;
-    }
-
-    public void setPrevious(String previous) {
-        this.previous = previous;
     }
 
     public boolean hasResults(){
@@ -105,7 +99,44 @@ public class SpeciesListDTO extends SwapiObject implements ListInterface {
         return results;
     }
 
-    public void setResults(SpeciesDTO[] results) {
-        this.results = results;
+    public Collection<SpeciesDTO> getAll(){
+        ArrayList<SpeciesDTO> all = new ArrayList<>(Arrays.asList(results));
+        if(this.hasPrevious()) {
+            try {
+                addToListPrevious(all, this.previous());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(this.hasNext()) {
+            try {
+                addToListNext(all, this.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return all;
+    }
+
+    private void addToListPrevious(Collection<SpeciesDTO> list, SpeciesListDTO peopleListDTO){
+        list.addAll(Arrays.asList(peopleListDTO.results));
+        if(peopleListDTO.hasPrevious()) {
+            try {
+                addToListPrevious(list, peopleListDTO.previous());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addToListNext(Collection<SpeciesDTO> list, SpeciesListDTO peopleListDTO){
+        list.addAll(Arrays.asList(peopleListDTO.results));
+        if(peopleListDTO.hasNext()) {
+            try {
+                addToListNext(list, peopleListDTO.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

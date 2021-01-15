@@ -39,7 +39,13 @@ public class RootDTO extends SwapiObject {
 
     public FilmDTO film(int id) throws Exception {
         URL url = URL.decode(films).appendToPath(String.valueOf(id));
-        return FilmDTO.createFrom(api.request(url),api);
+        FilmDTO film = FilmDTO.createFrom(api.request(url),api);
+        film.setUrl(url.toString());
+        return film;
+    }
+
+    public FilmsListDTO films(String search) throws Exception {
+        return FilmsListDTO.search(search, api);
     }
 
     public PeopleListDTO people() throws Exception {
@@ -49,8 +55,14 @@ public class RootDTO extends SwapiObject {
     }
 
     public PersonDTO person(int id) throws Exception {
-        URL url = URL.decode(films).appendToPath(String.valueOf(id));
-        return PersonDTO.createFrom(api.request(url),api);
+        URL url = URL.decode(people).appendToPath(String.valueOf(id));
+        PersonDTO personDTO = PersonDTO.createFrom(api.request(url),api);
+        personDTO.setUrl(url.toString());
+        return personDTO;
+    }
+
+    public PeopleListDTO people(String search) throws Exception {
+        return PeopleListDTO.search(search, api);
     }
 
     public PlanetsListDTO planets() throws Exception {
@@ -60,8 +72,14 @@ public class RootDTO extends SwapiObject {
     }
 
     public PlanetDTO planet(int id) throws Exception {
-        URL url = URL.decode(films).appendToPath(String.valueOf(id));
-        return PlanetDTO.createFrom(api.request(url),api);
+        URL url = URL.decode(planets).appendToPath(String.valueOf(id));
+        PlanetDTO planetDTO = PlanetDTO.createFrom(api.request(url),api);
+        planetDTO.setUrl(url.toString());
+        return planetDTO;
+    }
+
+    public PlanetsListDTO planets(String search) throws Exception {
+        return PlanetsListDTO.search(search,api);
     }
 
     public SpeciesListDTO species() throws Exception {
@@ -71,8 +89,14 @@ public class RootDTO extends SwapiObject {
     }
 
     public SpeciesDTO species(int id) throws Exception {
-        URL url = URL.decode(films).appendToPath(String.valueOf(id));
-        return SpeciesDTO.createFrom(api.request(url),api);
+        URL url = URL.decode(species).appendToPath(String.valueOf(id));
+        SpeciesDTO species = SpeciesDTO.createFrom(api.request(url),api);
+        species.setUrl(url.toString());
+        return species;
+    }
+
+    public SpeciesListDTO species(String search) throws Exception {
+        return SpeciesListDTO.search(search, api);
     }
 
     public VehiclesListDTO vehicles() throws Exception {
@@ -82,8 +106,14 @@ public class RootDTO extends SwapiObject {
     }
 
     public VehicleDTO vehicle(int id) throws Exception {
-        URL url = URL.decode(films).appendToPath(String.valueOf(id));
-        return VehicleDTO.createFrom(api.request(url),api);
+        URL url = URL.decode(vehicles).appendToPath(String.valueOf(id));
+        VehicleDTO vehicleDTO = VehicleDTO.createFrom(api.request(url),api);
+        vehicleDTO.setUrl(url.toString());
+        return vehicleDTO;
+    }
+
+    public VehiclesListDTO vehicles(String search) throws Exception {
+        return VehiclesListDTO.search(search,api);
     }
 
     public StarshipsListDTO starships() throws Exception {
@@ -93,8 +123,14 @@ public class RootDTO extends SwapiObject {
     }
 
     public StarshipDTO starship(int id) throws Exception {
-        URL url = URL.decode(films).appendToPath(String.valueOf(id));
-        return StarshipDTO.createFrom(api.request(url),api);
+        URL url = URL.decode(starships).appendToPath(String.valueOf(id));
+        StarshipDTO starshipDTO = StarshipDTO.createFrom(api.request(url),api);
+        starshipDTO.setUrl(url.toString());
+        return starshipDTO;
+    }
+
+    public StarshipsListDTO starships(String search) throws Exception {
+        return StarshipsListDTO.search(search,api);
     }
 
     public int calculateTotalFiles() throws Exception {

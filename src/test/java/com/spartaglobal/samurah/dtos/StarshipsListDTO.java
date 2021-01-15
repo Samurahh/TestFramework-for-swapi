@@ -6,6 +6,10 @@ import com.spartaglobal.samurah.interfaces.ListInterface;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 public class StarshipsListDTO extends SwapiObject implements ListInterface {
 
     public StarshipsListDTO(){}
@@ -69,8 +73,10 @@ public class StarshipsListDTO extends SwapiObject implements ListInterface {
     }
 
     public static StarshipsListDTO search(String searchName, API api) throws Exception {
-        URL queryUrl = api.root().starships().getUrl();
-        return StarshipsListDTO.createFrom(api.request(queryUrl.query(searchName)), api);
+        URL queryUrl = api.root().starships().getUrl().query(searchName);
+        StarshipsListDTO starshipsListDTO = StarshipsListDTO.createFrom(api.request(queryUrl), api);
+        starshipsListDTO.setUrl(queryUrl.toString());
+        return starshipsListDTO;
     }
 
     public int getCount() {
@@ -91,5 +97,46 @@ public class StarshipsListDTO extends SwapiObject implements ListInterface {
 
     public StarshipDTO[] getResults() {
         return results;
+    }
+
+    public Collection<StarshipDTO> getAll(){
+        ArrayList<StarshipDTO> all = new ArrayList<>(Arrays.asList(results));
+        if(this.hasPrevious()) {
+            try {
+                addToListPrevious(all, this.previous());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if(this.hasNext()) {
+            try {
+                addToListNext(all, this.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return all;
+    }
+
+    private void addToListPrevious(Collection<StarshipDTO> list, StarshipsListDTO peopleListDTO){
+        list.addAll(Arrays.asList(peopleListDTO.results));
+        if(peopleListDTO.hasPrevious()) {
+            try {
+                addToListPrevious(list, peopleListDTO.previous());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addToListNext(Collection<StarshipDTO> list, StarshipsListDTO peopleListDTO){
+        list.addAll(Arrays.asList(peopleListDTO.results));
+        if(peopleListDTO.hasNext()) {
+            try {
+                addToListNext(list, peopleListDTO.next());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

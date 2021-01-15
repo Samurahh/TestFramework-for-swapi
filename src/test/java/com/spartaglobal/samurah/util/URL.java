@@ -105,7 +105,6 @@ public class URL {
                 urlBuild.append(query);
             }
         }
-        System.err.println(urlBuild.toString());
         return urlBuild.toString();
     }
 }
