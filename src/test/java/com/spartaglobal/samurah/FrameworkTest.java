@@ -2,6 +2,7 @@ package com.spartaglobal.samurah;
 
 import com.google.gson.Gson;
 import com.spartaglobal.samurah.dtos.*;
+import com.spartaglobal.samurah.exceptions.RequestFailedException;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.APIUtility;
 import org.junit.jupiter.api.Assertions;
@@ -123,29 +124,35 @@ public class FrameworkTest {
     PLANETS/1 should have reference of FILMS/1
      */
     @Test
-    @DisplayName("WITHOUT: Check mutual reference")
-    void withoutCheckMutualReference() throws IOException, InterruptedException {
-        String film = "https://swapi.dev/api/films/1/";
-        HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(film)).build();
-        HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-        FilmDTO FilmDTO = new Gson().fromJson(httpResponse.body(), FilmDTO.class);
-    }
-
-
-    @Test
     @DisplayName("WITH: Check mutual reference")
     void withCheckMutualReference() throws Exception {
-        boolean filmHasPlanet = APIUtility.hasReference(API.client.root().film(1), API.client.root().planet(4).getUrl());
-        System.out.println(filmHasPlanet);
+        boolean filmHasPlanet = APIUtility.hasReference(API.client.root().film(1), API.client.root().planet(1).getUrl());
         boolean planetHasFilm = APIUtility.hasReference(API.client.root().planet(1), API.client.root().film(1).getUrl());
-        System.out.println(planetHasFilm);
         Assertions.assertTrue(planetHasFilm && filmHasPlanet);
     }
 
     @Test
     @DisplayName("WITH: getAll")
     void withGetAll() throws Exception {
-        API.client.root().vehicles().getAll().forEach(i-> System.out.println(i.getName()));
+        Assertions.assertEquals(API.client.root().vehicles().getCount(), API.client.root().vehicles().getAll().size());
+    }
+
+    @Test
+    @DisplayName("WITH: test connection status")
+    void withTestConnectionStatus(){
+        try {
+            API.client.request("http://swapi.dev/api/people/");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        } catch (RequestFailedException e) {
+            Assertions.fail();
+        }
+    }
+
+    @Test
+    @DisplayName("WITH: Can pick up from anywhere in the FileTree")
+    void withCanPickUpFromAnywhereInTheFileTree(){
+
     }
 
 }

@@ -3,6 +3,7 @@ package com.spartaglobal.samurah.util;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.spartaglobal.samurah.dtos.RootDTO;
+import com.spartaglobal.samurah.exceptions.RequestFailedException;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -31,9 +32,11 @@ public class API {
      * and avoid sending multiple requests to the server API.
      */
     public final LinkedList<Map.Entry<Connection, JsonObject>> requests;
+    public final LinkedList<Connection> connections;
 
     private API(){
         this.requests = new LinkedList<>();
+        this.connections = new LinkedList<>();
     }
 
     public RootDTO root() throws Exception {
@@ -52,19 +55,20 @@ public class API {
         return request(BASE_URL);
     }
 
-    public JsonObject request(String url) throws IOException, InterruptedException {
+    public JsonObject request(String url) throws IOException, InterruptedException, RequestFailedException {
         return request(URL.decode(url));
     }
 
-    public JsonObject request(String path, String query) throws IOException, InterruptedException {
+    public JsonObject request(String path, String query) throws IOException, InterruptedException, RequestFailedException {
         return request(URL.build(BASE_URL,path,query));
     }
 
-    public JsonObject request(URL url) throws IOException, InterruptedException {
+    public JsonObject request(URL url) throws IOException, InterruptedException, RequestFailedException {
         Connection currentConnection = Connection.connect(url);
         if(currentConnection.statusCode() != 200){
-            throw new RuntimeException("Failed: HTTP error code: "+ currentConnection.statusCode());
+            throw new RequestFailedException(currentConnection, "Failed: HTTP error code: "+ currentConnection.statusCode());
         }
+
         JsonObject jsonObject = deserialize(currentConnection.getResponse().body());
         requests.add(Map.entry(currentConnection, jsonObject));
         return jsonObject;
@@ -73,6 +77,7 @@ public class API {
     private JsonObject deserialize(String json){
         return new Gson().fromJson(json, JsonObject.class);
     }
+
 
     public Map.Entry<Connection, JsonObject> getLastRequest(){
         return requests.getLast();

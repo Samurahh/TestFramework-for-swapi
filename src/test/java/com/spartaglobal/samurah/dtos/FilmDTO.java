@@ -2,6 +2,7 @@ package com.spartaglobal.samurah.dtos;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.spartaglobal.samurah.exceptions.RequestFailedException;
 import com.spartaglobal.samurah.util.API;
 import com.spartaglobal.samurah.util.URL;
 
@@ -58,7 +59,7 @@ public class FilmDTO extends SwapiObject {
         return species;
     }
 
-    public SpeciesDTO species(int id) throws IOException, InterruptedException {
+    public SpeciesDTO species(int id) throws IOException, InterruptedException, RequestFailedException {
         if (id < species.length) {
             return SpeciesDTO.createFrom(api.request(species[id]), api);
         }
